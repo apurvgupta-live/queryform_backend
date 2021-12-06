@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const app = express();
+// const autoIncrement = require("mongoose-auto-increment");
 
 //ROUTE IMPORT
 const queryRoute = require("./routes/query");
@@ -19,6 +20,7 @@ mongoose
   .then(() => {
     console.log("DB CONNECTED");
   });
+// autoIncrement.initialize(connection);
 
 //MIDDLEWARES
 app.use(bodyParser.json());

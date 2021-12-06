@@ -5,6 +5,13 @@ exports.addQuery = async (req, res) => {
   console.log(req.body);
   const queryObj = new Query(req.body);
   try {
+    let size;
+    await Query.count((err, count) => {
+      if (err) console.log(err);
+      else size = count;
+    });
+    queryObj["ticket_no"] = size + 1;
+    console.log("QOBJ=", queryObj);
     const savedObj = await queryObj.save();
     if (!savedObj) throw new Error("can not save object into db");
 
@@ -28,7 +35,7 @@ exports.getUserById = (req, res, next, id) => {
         error: "No User Found",
       });
     }
-    res.profile = user;
+    req.profile = user;
     next();
   });
 };
@@ -53,4 +60,27 @@ exports.updateUser = (req, res) => {
       res.json(user);
     }
   );
+};
+
+//GET QUERIES
+exports.getQueries = async (req, res) => {
+  try {
+    const queries = await Query.find();
+    if (queries.length > 0) {
+      return res.json({
+        isValidExecution: true,
+        queries: queries,
+      });
+    } else {
+      return res.json({
+        isValidExecution: true,
+        queries: [],
+      });
+    }
+  } catch (error) {
+    return res.json({
+      isValidExecution: false,
+      error: error.message,
+    });
+  }
 };
