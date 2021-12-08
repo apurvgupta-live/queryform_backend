@@ -51,6 +51,7 @@ router.post("/addQuery", validation, addQuery);
 //READ ROUTE
 router.get("/user/:userId", getUser);
 router.get("/getqueries", getQueries); //For Frontend
+
 //UPDATE USER
 router.put("/user/:userId", updateUser);
 
