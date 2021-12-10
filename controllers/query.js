@@ -3,7 +3,29 @@ const Query = require("../models/query");
 //ADD QUERY
 exports.addQuery = async (req, res) => {
   console.log(req.body);
-  const queryObj = new Query(req.body);
+  const {
+    mobile_no,
+    organization_name,
+    customer_name,
+    customer_email_id,
+    type_of_query,
+    attachment,
+    description,
+  } = req.body;
+
+  if (
+    mobile_no &&
+    organization_name &&
+    customer_name &&
+    customer_email_id &&
+    type_of_query &&
+    attachment &&
+    description
+  ) {
+    const queryObj = new Query(req.body);
+  } else {
+    return res.json({ message: "All Fields are required" });
+  }
   try {
     let size;
     await Query.count((err, count) => {
@@ -64,21 +86,22 @@ exports.updateUser = (req, res) => {
 
 //GET QUERIES
 exports.getQueries = async (req, res) => {
+  const { _id, organization_id } = req.body;
   try {
-    const queries = await Query.find();
-    if (queries.length > 0) {
-      return res.json({
-        isValidExecution: true,
-        queries: queries,
-      });
+    const queries = await Query.findOne(
+      { _id: _id, organization_id: organization_id },
+      "ticket_no mobile_no organization_name customer_name customer_email_id type_of_query attachment description status"
+    );
+    if (!queries) {
+      throw new Error("Please enter valid Id, No Document found");
     } else {
-      return res.json({
+      return res.status(200).json({
         isValidExecution: true,
-        queries: [],
+        query: queries,
       });
     }
   } catch (error) {
-    return res.json({
+    return res.status(400).json({
       isValidExecution: false,
       error: error.message,
     });
