@@ -46,7 +46,7 @@ const validation = [
 router.param("userId", getUserById);
 
 //WRITE ROUTE
-router.post("/addQuery", validation, addQuery);
+router.post("/addquery", validation, addQuery);
 
 //READ ROUTE
 router.get("/user/:userId", getUser);

@@ -6,6 +6,7 @@ exports.addQuery = async (req, res) => {
   const {
     mobile_no,
     organization_name,
+    organization_id,
     customer_name,
     customer_email_id,
     type_of_query,
@@ -16,17 +17,18 @@ exports.addQuery = async (req, res) => {
   if (
     mobile_no &&
     organization_name &&
+    organization_id &&
     customer_name &&
     customer_email_id &&
     type_of_query &&
     attachment &&
     description
   ) {
-    const queryObj = new Query(req.body);
   } else {
     return res.json({ message: "All Fields are required" });
   }
   try {
+    const queryObj = new Query(req.body);
     let size;
     await Query.count((err, count) => {
       if (err) console.log(err);

@@ -5,6 +5,7 @@ const querySchema = new mongoose.Schema(
     ticket_no: { type: Number },
     mobile_no: { type: Number, required: true },
     organization_name: { type: String, required: true },
+    organization_id: { type: String || Number, required: true },
     customer_name: { type: String, required: true },
     customer_email_id: { type: String, required: true },
     type_of_query: { type: String, required: true },
